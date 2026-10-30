@@ -163,6 +163,16 @@ footer nav a:hover{color:var(--bone)}
   form{grid-template-columns:1fr}
   .hero{padding-bottom:120px}
 }
+
+/* menu mobile */
+@media (max-width:900px){
+  .menu-open{overflow:hidden}
+  .menu-open .top{backdrop-filter:none;background:var(--ink)}
+  .nav.open{position:fixed;inset:0;z-index:45;background:var(--ink);flex-direction:column;justify-content:center;align-items:center;gap:26px}
+  .nav.open a.l{display:block;font:800 44px/1 var(--goth);letter-spacing:0;text-transform:none;color:var(--bone)}
+  .nav.open .btn{display:inline-flex;margin-top:12px}
+  .nav.open .burger{position:absolute;top:14px;right:var(--gutter)}
+}
 .draft{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#e9e3d8;color:#0c0b0b;font:500 13px/1.4 "Archivo",sans-serif;text-align:center;padding:8px 16px}.draft a{text-decoration:underline}body{padding-bottom:36px}
 </style>
 </head>
@@ -210,7 +220,7 @@ footer nav a:hover{color:var(--bone)}
       <a class="l" href="#studios">Studios</a>
       <a class="l" href="#">Headshop</a>
       <a class="btn btn--line" href="#termin">Termin anfragen</a>
-      <button class="burger" aria-label="Menü"><svg viewBox="0 0 24 24" width="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h12"/></svg></button>
+      <button class="burger" aria-label="Menü" aria-expanded="false"><svg viewBox="0 0 24 24" width="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h12"/></svg></button>
     </nav>
   </div>
 </header>
@@ -335,9 +345,15 @@ footer nav a:hover{color:var(--bone)}
 </footer>
 
 <script>
-const top=document.getElementById('top');
-const onScroll=()=>top.classList.toggle('is-solid',scrollY>40);
+const header=document.getElementById('top');
+const onScroll=()=>header.classList.toggle('is-solid',scrollY>40);
 addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+const nav=document.querySelector('.nav'),burger=document.querySelector('.burger');
+const setMenu=open=>{nav.classList.toggle('open',open);document.body.classList.toggle('menu-open',open);burger.setAttribute('aria-expanded',open);burger.setAttribute('aria-label',open?'Menü schließen':'Menü');};
+burger.addEventListener('click',()=>setMenu(!nav.classList.contains('open')));
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
 </script>
 </body>
 </html>
